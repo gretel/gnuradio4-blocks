@@ -9,7 +9,6 @@ using namespace boost::ut;
 
 using namespace std::string_view_literals;
 
-#include <gnuradio-4.0/GrAudioBlocks.hpp>
 #include <gnuradio-4.0/GrBasicBlocks.hpp>
 #include <gnuradio-4.0/GrElectricalBlocks.hpp>
 #include <gnuradio-4.0/GrFileIoBlocks.hpp>
@@ -18,11 +17,20 @@ using namespace std::string_view_literals;
 #include <gnuradio-4.0/GrHttpBlocks.hpp>
 #include <gnuradio-4.0/GrTestingBlocks.hpp>
 
+#if __has_include(<gnuradio-4.0/GrAudioBlocks.hpp>)
+#include <gnuradio-4.0/GrAudioBlocks.hpp>
+#define GNURADIO4_HAVE_AUDIO_BLOCKS 1
+#else
+#define GNURADIO4_HAVE_AUDIO_BLOCKS 0
+#endif
+
 const boost::ut::suite TagTests = [] {
     auto&       registry = gr::globalBlockRegistry();
     std::size_t result   = 0UZ;
     result += gr::blocklib::initGrBasicBlocks(registry);
+#if GNURADIO4_HAVE_AUDIO_BLOCKS
     result += gr::blocklib::initGrAudioBlocks(registry);
+#endif
     result += gr::blocklib::initGrElectricalBlocks(registry);
     result += gr::blocklib::initGrFileIoBlocks(registry);
     result += gr::blocklib::initGrFilterBlocks(registry);
@@ -87,7 +95,9 @@ const boost::ut::suite TagTests = [] {
         expect(registry.contains("gr::http::HttpSink"sv));
         expect(registry.contains("gr::blocks::fileio::WavSource<float32>"sv));
         expect(registry.contains("gr::blocks::fileio::WavSink<float32>"sv));
+#if GNURADIO4_HAVE_AUDIO_BLOCKS
         expect(registry.contains("gr::audio::AudioSink<float32>"sv));
+#endif
         expect(registry.contains("gr::filter::fir_filter<float32>"sv));
         expect(registry.contains("gr::blocks::fft::FFT<float32>"sv));
     };
@@ -95,7 +105,9 @@ const boost::ut::suite TagTests = [] {
     "CheckBlockInstantiations"_test = [&] {
         expect(registry.create("gr::testing::Delay<float32>"sv, {}) != nullptr);
         expect(registry.create("gr::blocks::fileio::WavSource<float32>"sv, {}) != nullptr);
+#if GNURADIO4_HAVE_AUDIO_BLOCKS
         expect(registry.create("gr::audio::AudioSink<float32>"sv, {}) != nullptr);
+#endif
         expect(registry.create("gr::basic::DataSink<float32>"sv, {}) != nullptr);
         expect(registry.create("gr::basic::ClockSource"sv, {}) != nullptr);
     };

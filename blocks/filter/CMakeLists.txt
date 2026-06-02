@@ -1,6 +1,6 @@
 add_library(gr-filter INTERFACE)
 add_library(gnuradio4::gr-filter ALIAS gr-filter)
-target_link_libraries(gr-filter INTERFACE gnuradio4::gnuradio-core)
+target_link_libraries(gr-filter INTERFACE gnuradio4::gnuradio-core gnuradio4::gnuradio-algorithm)
 target_include_directories(gr-filter INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>
                                                $<INSTALL_INTERFACE:include/>)
 install(TARGETS gr-filter EXPORT gnuradio4Targets)

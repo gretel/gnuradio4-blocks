@@ -1,3 +1,6 @@
 add_ut_test(qa_Math)
+target_link_libraries(qa_Math PRIVATE gr-math gr-testing)
 add_ut_test(qa_ExpressionBlocks)
+target_link_libraries(qa_ExpressionBlocks PRIVATE gr-math gr-testing)
 add_ut_test(qa_Rotator)
+target_link_libraries(qa_Rotator PRIVATE gr-math gr-testing)

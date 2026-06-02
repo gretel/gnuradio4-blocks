@@ -1,16 +1,22 @@
 if(NOT EMSCRIPTEN AND TARGET gnuradio4::GrBasicBlocksShared)
   add_ut_test(qa_KnownSharedLibBlocks)
+  set(_known_shared_lib_targets
+      gnuradio-core
+      gnuradio4::GrTestingBlocksShared
+      gnuradio4::GrFileIoBlocksShared
+      gnuradio4::GrBasicBlocksShared
+      gnuradio4::GrElectricalBlocksShared
+      gnuradio4::GrHttpBlocksShared
+      gnuradio4::GrFilterBlocksShared
+      gnuradio4::GrFourierBlocksShared)
+
+  if(TARGET gnuradio4::GrAudioBlocksShared)
+    list(APPEND _known_shared_lib_targets gnuradio4::GrAudioBlocksShared)
+  endif()
+
   target_link_libraries(
     qa_KnownSharedLibBlocks
-    PRIVATE gnuradio-core
-            gnuradio4::GrAudioBlocksShared
-            gnuradio4::GrTestingBlocksShared
-            gnuradio4::GrFileIoBlocksShared
-            gnuradio4::GrBasicBlocksShared
-            gnuradio4::GrElectricalBlocksShared
-            gnuradio4::GrHttpBlocksShared
-            gnuradio4::GrFilterBlocksShared
-            gnuradio4::GrFourierBlocksShared)
+    PRIVATE ${_known_shared_lib_targets})
 
   add_executable(qa_apptest_KnownStaticLibBlocks qa_apptest_KnownStaticLibBlocks.cpp)
   setup_test(qa_apptest_KnownStaticLibBlocks)

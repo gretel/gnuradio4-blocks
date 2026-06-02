@@ -85,12 +85,12 @@ const boost::ut::suite HttpBlocktests = [] {
         httplib::Server server;
         server.Get("/echo", [](const httplib::Request&, httplib::Response& res) { res.set_content("Hello world!", "text/plain"); });
 
-        auto thread = std::thread{[&server] { server.listen("localhost", 8080); }};
+        auto thread = std::thread{[&server] { server.listen("127.0.0.1", 8080); }};
         server.wait_until_ready();
 #endif
 
         gr::Graph graph;
-        auto&     httpSource = graph.emplaceBlock<gr::http::HttpSource>({{"url", gr::pmt::Value("http://localhost:8080/echo")}});
+        auto&     httpSource = graph.emplaceBlock<gr::http::HttpSource>({{"url", gr::pmt::Value("http://127.0.0.1:8080/echo")}});
         auto&     sink       = graph.emplaceBlock<HttpTestSink<pmt::Value::Map>>();
 #ifdef __EMSCRIPTEN__
         httpSource._emscriptenRunOnMainThread = false;
@@ -116,12 +116,12 @@ const boost::ut::suite HttpBlocktests = [] {
         httplib::Server server;
         server.Get("/does-not-exist", [](const httplib::Request&, httplib::Response& res) { res.status = httplib::StatusCode::NotFound_404; });
 
-        auto thread = std::thread{[&server] { server.listen("localhost", 8080); }};
+        auto thread = std::thread{[&server] { server.listen("127.0.0.1", 8080); }};
         server.wait_until_ready();
 #endif
 
         gr::Graph graph;
-        auto&     httpSource = graph.emplaceBlock<gr::http::HttpSource>({{"url", gr::pmt::Value("http://localhost:8080/does-not-exist")}});
+        auto&     httpSource = graph.emplaceBlock<gr::http::HttpSource>({{"url", gr::pmt::Value("http://127.0.0.1:8080/does-not-exist")}});
         auto&     sink       = graph.emplaceBlock<HttpTestSink<pmt::Value::Map>>();
 #ifdef __EMSCRIPTEN__
         httpSource._emscriptenRunOnMainThread = false;
@@ -155,7 +155,7 @@ const boost::ut::suite HttpBlocktests = [] {
             res.set_content("OK", "text/plain");
         });
 
-        auto thread = std::thread{[&server] { server.listen("localhost", 8080); }};
+        auto thread = std::thread{[&server] { server.listen("127.0.0.1", 8080); }};
         server.wait_until_ready();
 #endif
 
@@ -163,7 +163,7 @@ const boost::ut::suite HttpBlocktests = [] {
         const auto payload   = byteTensor("param=42");
         const auto chunkSize = payload.size();
         auto&      source    = graph.emplaceBlock<gr::testing::TagSource<std::uint8_t, gr::testing::ProcessFunction::USE_PROCESS_BULK>>({{"values", payload}, {"n_samples_max", gr::Size_t(0)}});
-        auto&      sink      = graph.emplaceBlock<gr::http::HttpSink>({{"url", gr::pmt::Value("http://localhost:8080/number")}, {"content_type", gr::pmt::Value("application/x-www-form-urlencoded")}});
+        auto&      sink      = graph.emplaceBlock<gr::http::HttpSink>({{"url", gr::pmt::Value("http://127.0.0.1:8080/number")}, {"content_type", gr::pmt::Value("application/x-www-form-urlencoded")}});
 #ifdef __EMSCRIPTEN__
         sink._emscriptenRunOnMainThread = false;
 #endif
@@ -207,12 +207,12 @@ const boost::ut::suite HttpBlocktests = [] {
             res.set_content("event", "text/plain");
         });
 
-        auto thread = std::thread{[&server] { server.listen("localhost", 8080); }};
+        auto thread = std::thread{[&server] { server.listen("127.0.0.1", 8080); }};
         server.wait_until_ready();
 #endif
 
         gr::Graph graph;
-        auto&     httpSource = graph.emplaceBlock<gr::http::HttpSource>({{"url", gr::pmt::Value("http://localhost:8080/notify")}, {"type", gr::pmt::Value("SUBSCRIBE")}});
+        auto&     httpSource = graph.emplaceBlock<gr::http::HttpSource>({{"url", gr::pmt::Value("http://127.0.0.1:8080/notify")}, {"type", gr::pmt::Value("SUBSCRIBE")}});
         auto&     sink       = graph.emplaceBlock<HttpTestSink<pmt::Value::Map>>();
 #ifdef __EMSCRIPTEN__
         httpSource._emscriptenRunOnMainThread = false;

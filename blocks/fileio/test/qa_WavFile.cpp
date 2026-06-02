@@ -377,7 +377,7 @@ const boost::ut::suite<"WAV file blocks"> _wavFileTests = [] {
         expect(eq(samples, reference)) << caseName;
     };
 
-#ifndef __EMSCRIPTEN__
+#if GR4_ENABLE_HTTP_TESTS && !defined(__EMSCRIPTEN__)
     "HTTP WAV sources"_test = [] {
         constexpr std::string_view      caseName = "gr::blocks::fileio::WavSource<float>";
         const std::vector<std::int16_t> reference{0, 8192, -8192, 16384};
@@ -386,14 +386,14 @@ const boost::ut::suite<"WAV file blocks"> _wavFileTests = [] {
 
         httplib::Server server;
         server.Get("/tone.wav", [&body](const httplib::Request&, httplib::Response& res) { res.set_content(body, "audio/wav"); });
-        const int port = server.bind_to_any_port("localhost");
+        const int port = server.bind_to_any_port("127.0.0.1");
         expect(port > 0) << caseName;
 
         auto thread = std::thread{[&server] { server.listen_after_bind(); }};
         server.wait_until_ready();
 
         gr::Graph graph;
-        auto&     source = graph.emplaceBlock<gr::blocks::fileio::WavSource<float>>({{"uri", std::format("http://localhost:{}/tone.wav", port)}});
+        auto&     source = graph.emplaceBlock<gr::blocks::fileio::WavSource<float>>({{"uri", std::format("http://127.0.0.1:{}/tone.wav", port)}});
         auto&     sink   = graph.emplaceBlock<gr::testing::TagSink<float, gr::testing::ProcessFunction::USE_PROCESS_BULK>>();
         expect(graph.connect<"out", "in">(source, sink).has_value()) << caseName;
         gr::scheduler::Simple<> sched;
