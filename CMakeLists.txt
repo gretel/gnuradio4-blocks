@@ -21,9 +21,18 @@ option(GR4_ENABLE_AUDIO "Build the audio block family" OFF)
 option(GR4_ENABLE_SDR "Build the SDR block family" OFF)
 option(GR4_ENABLE_HTTP_TESTS "Build HTTP integration tests" OFF)
 option(GR_USE_FETCHCONTENT_DEPS "Allow CMake to download selected third-party dependencies with FetchContent" OFF)
+option(USE_CCACHE "Use ccache if available" ON)
 set(GR4_PKG_VERSION "${PROJECT_VERSION}-git" CACHE STRING "Version string used in gnuradio4Blocks.pc")
 set(GR_TEST_HELPER_LIBRARIES "")
 set(PYTHON_AVAILABLE OFF)
+
+find_program(CCACHE_PROGRAM ccache)
+if(CCACHE_PROGRAM AND USE_CCACHE)
+  message(STATUS "ccache found and will be used")
+  set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
+else()
+  message(STATUS "ccache will not be used")
+endif()
 
 if(ENABLE_TESTING
    AND (UNIX
