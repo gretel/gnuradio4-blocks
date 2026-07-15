@@ -126,7 +126,7 @@ The information is stored (info only) in `trigger_name`, `trigger_time`, `trigge
                     {gr::tag::TRIGGER_TIME.shortKey(), _now - static_cast<uint64_t>(relOffset)},                                 //
                     {"trigger_time_error", static_cast<uint64_t>(gr::uncertainty(edgeIdxOffset) * static_cast<float>(_period))}, //
                     {gr::tag::TRIGGER_OFFSET.shortKey(), relOffset},                                                             //
-                    {gr::tag::CONTEXT.shortKey(), context}                                                                       //
+                    {gr::tag::CONTEXT_KEY.shortKey(), context}                                                                       //
                 },
                 edgePos);
 
