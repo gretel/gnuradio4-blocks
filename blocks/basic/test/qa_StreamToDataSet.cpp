@@ -60,7 +60,7 @@ const boost::ut::suite<"StreamToDataSet Block"> selectorTest = [] {
         auto& funcGen = graph.emplaceBlock<FunctionGenerator<float>>({{"sample_rate", sample_rate}, {"signal_trigger", "CMD_BP_START"}, {"name", "FunctionGenerator"}});
 
         using gr::tag::TRIGGER_NAME;
-        using gr::tag::CONTEXT;
+        using gr::tag::CONTEXT_KEY;
 
         const auto now = settings::convertTimePointToUint64Ns(std::chrono::system_clock::now());
         expect(funcGen.settings().set(createConstPropertyMap("CMD_BP_START", 5.f), SettingsCtx{now, "FAIR.SELECTOR.C=1:S=1:P=1"}).empty());
@@ -136,7 +136,7 @@ inline void          resetTriggerTime(std::uint64_t v = 0UZ) { gTriggerTimeCount
 
 gr::Tag genTrigger(std::size_t index, std::string triggerName, std::string triggerCtx, std::uint64_t triggerTime) {
     return {index, {{gr::tag::TRIGGER_NAME.shortKey(), triggerName}, {gr::tag::TRIGGER_TIME.shortKey(), triggerTime}, {gr::tag::TRIGGER_OFFSET.shortKey(), 0.f}, //
-                       {gr::tag::CONTEXT.shortKey(), triggerCtx},                                                                                                //
+                       {gr::tag::CONTEXT_KEY.shortKey(), triggerCtx},                                                                                                //
                        {gr::tag::TRIGGER_META_INFO.shortKey(), gr::property_map{}}}};
 };
 

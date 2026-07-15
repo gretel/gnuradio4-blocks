@@ -721,7 +721,7 @@ const boost::ut::suite DataSinkTests = [] {
 
         auto genTrigger = [](std::size_t index, std::string triggerName, std::string triggerCtx = {}) {
             return Tag{index, {{gr::tag::TRIGGER_NAME.shortKey(), triggerName}, {gr::tag::TRIGGER_TIME.shortKey(), std::uint64_t(0)}, {gr::tag::TRIGGER_OFFSET.shortKey(), 0.f}, //
-                                  {gr::tag::CONTEXT.shortKey(), triggerCtx},                                                                                                     //
+                                  {gr::tag::CONTEXT_KEY.shortKey(), triggerCtx},                                                                                                     //
                                   {gr::tag::TRIGGER_META_INFO.shortKey(), gr::property_map{}}}};
         };
 
@@ -780,7 +780,7 @@ const boost::ut::suite DataSinkTests = [] {
 
         auto genTrigger = [](std::size_t index, std::string triggerName, std::string triggerCtx = {}) {
             return Tag{index, {{gr::tag::TRIGGER_NAME.shortKey(), triggerName}, {gr::tag::TRIGGER_TIME.shortKey(), std::uint64_t(0)}, {gr::tag::TRIGGER_OFFSET.shortKey(), 0.f}, //
-                                  {gr::tag::CONTEXT.shortKey(), triggerCtx},                                                                                                     //
+                                  {gr::tag::CONTEXT_KEY.shortKey(), triggerCtx},                                                                                                     //
                                   {gr::tag::TRIGGER_META_INFO.shortKey(), gr::property_map{}}}};
         };
 

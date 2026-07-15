@@ -106,7 +106,7 @@ for synchronising otherwise undisciplined SDRs using their PPS)">;
             tag::put(tagMap, tag::TRIGGER_META_INFO, std::move(metaInfo));
         }
         if (!context.value.empty()) {
-            tag::put(tagMap, tag::CONTEXT, context.value);
+            tag::put(tagMap, tag::CONTEXT_KEY, context.value);
         }
         out.publishTag(std::move(tagMap), 0UZ);
         span.publish(span.size());

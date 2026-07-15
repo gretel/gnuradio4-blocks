@@ -154,7 +154,7 @@ Terminates when n_samples_max is reached (0 = unlimited).)"">;
                 triggerTag[tag::TRIGGER_NAME.shortKey()]      = triggerName;
                 triggerTag[tag::TRIGGER_TIME.shortKey()]      = triggerTime;
                 triggerTag[tag::TRIGGER_OFFSET.shortKey()]    = 0.f;
-                triggerTag[tag::CONTEXT.shortKey()]           = triggerContext;
+                triggerTag[tag::CONTEXT_KEY.shortKey()]           = triggerContext;
                 triggerTag[tag::TRIGGER_META_INFO.shortKey()] = property_map{};
 
                 if (verbose_console) {
